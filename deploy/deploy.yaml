@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: node-lister
+  namespace: default
+  labels:
+    app: node-lister
+spec:
+  template:
+    metadata:
+      labels:
+        app: node-lister
+    spec:
+      serviceAccount: node-lister
+      containers:
+      - image: bzon/node-lister:latest
+        name: node-lister
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        args:
+        - '-in-cluster'
+        # get nodes with label nginx in string
+        - '-with-label=nginx'
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-lister

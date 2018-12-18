@@ -1,0 +1,28 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: node-lister
+  namespace: default
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: node-lister
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "watch", "list"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: node-lister
+subjects:
+- kind: ServiceAccount
+  name: node-lister
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: node-lister
+  apiGroup: rbac.authorization.k8s.io
